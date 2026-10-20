@@ -1,0 +1,65 @@
+import joblib 
+from fastapi import FastAPI
+from pydantic import BaseModel ,Field
+import pandas as pd
+from typing import Literal
+model = joblib.load('Mental_health_model.pkl')
+from fastapi.middleware.cors import CORSMiddleware
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+class InputData(BaseModel):
+    age : int = Field(...,ge =10 ,le=100)
+    gender  : Literal['Male','Female']
+    country : str
+    academic_level : Literal['Undergraduate','graduate','High School']
+    most_used_platform : Literal['Instagram', 'TikTok','Facebook','LinkedIn','YouTube','Twitter','Snapchat','WhatsApp','LINE','VKontakte','KakaoTalk','WeChat']
+    purpose_of_use : Literal['Networking', 'Education', 'Entertainment', 'News']
+    avg_daily_usage_hours : float = Field(...,ge=0.0 ,le=24.0)
+    daily_unlocks :int = Field(..., ge=0)
+    study_hours : float = Field(...,ge=0.0 ,le=24.0)
+    physical_activity_hours : float = Field(...,ge=0.0 ,le=24.0)
+    sleep_hours_per_night : float = Field(...,ge=0.0 ,le=24.0)
+    stress_level : Literal['Medium', 'Low', 'Very High', 'High']
+
+
+
+class PredictionOutput(BaseModel):
+    predicted_mental_health_status :  float
+
+@app.get("/") # root endpoint
+def greet():
+    return {"message": "Hello, welcome to the Mental Health Prediction API!"}
+
+
+top_country =  ['Other','India','USA','Canada','Australia','UK','Germany','Mexico','Turkey','France']
+@app.post("/predict", response_model=PredictionOutput) # prediction endpoint
+def predict(data: InputData):
+
+    country_group = data.country if data.country in top_country else 'Other';
+
+    input_raw = pd.DataFrame([{
+        'Age': data.age,
+        'Gender': data.gender,
+        'Country': country_group,
+        'Academic_Level': data.academic_level,
+        'Most_Used_Platform': data.most_used_platform,
+        'Purpose_Of_Use': data.purpose_of_use,
+        'Avg_Daily_Usage_Hours': data.avg_daily_usage_hours,
+        'Daily_Unlocks': data.daily_unlocks,
+        'Study_Hours': data.study_hours,
+        'Physical_Activity_Hours': data.physical_activity_hours,
+        'Sleep_Hours_Per_Night': data.sleep_hours_per_night,
+        'Stress_Level': data.stress_level,
+        'group_c':country_group
+        }])
+
+    prediction = model.predict(input_raw)
+    return PredictionOutput(predicted_mental_health_status=round(float(prediction[0]), 2))
+

@@ -1,0 +1,65 @@
+:root{
+  --bg:#171429; --panel:#211c3b; --line:#3a3360; --text:#ece8f7; --mute:#a19bc2; --accent:#9aa5ff;
+  --sleep:#7c8cff; --study:#f2c46d; --social:#ff8a7a; --move:#7fd8be; --rest:#3a3360;
+  --bad:#ff7a96; --mid:#f2c46d; --good:#7fd8be; --r:12px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 14px/1.6 "JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.top{max-width:1100px;margin:0 auto;padding:44px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+h1{margin:0;font:700 clamp(30px,4.4vw,46px)/1.08 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em;max-width:16ch}
+.sub{margin:12px 0 0;color:var(--mute)}
+.api{display:flex;align-items:center;gap:8px;margin:0;padding:6px 14px;border:1px solid var(--line);border-radius:99px;color:var(--mute)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.api[data-state=ok] .dot{background:var(--move)}
+.api[data-state=down] .dot{background:var(--bad)}
+
+.layout{max-width:1100px;margin:32px auto 64px;padding:0 24px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:start}
+fieldset{margin:0 0 20px;padding:20px 22px 24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+legend{padding:0 8px;font:600 18px "Bricolage Grotesque",system-ui,sans-serif}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px}
+.wide{grid-column:1/-1}
+.t{display:block;margin-bottom:6px;color:var(--mute)}
+.t output{float:right;color:var(--text)}
+
+input[type=number],select{width:100%;padding:10px 12px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;font:inherit}
+
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{position:relative}
+.seg input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.seg span{display:block;padding:8px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.seg input:checked+span{background:#2d2852;border-color:var(--accent)}
+.seg input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+
+input[type=range]{--c:var(--accent);--p:0%;-webkit-appearance:none;appearance:none;width:100%;height:6px;margin:10px 0 4px;border-radius:3px;background:linear-gradient(90deg,var(--c) var(--p),var(--line) var(--p))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--text);border:4px solid var(--c)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--text);border:4px solid var(--c)}
+[data-k=sleep]{--c:var(--sleep)} [data-k=study]{--c:var(--study)} [data-k=social]{--c:var(--social)} [data-k=move]{--c:var(--move)}
+
+.side{position:sticky;top:24px;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.ring{display:block;width:min(100%,250px);margin:0 auto 18px}
+.ring text{fill:var(--text);text-anchor:middle;font-family:inherit}
+.legend{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:6px}
+.legend li{display:flex;justify-content:space-between}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:3px;background:var(--k)}
+.legend .warn{color:var(--study);display:block}
+
+.btn{width:100%;padding:14px;border:0;border-radius:8px;background:var(--accent);color:#14112a;font:500 15px "JetBrains Mono",monospace;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:progress}
+.err{margin:14px 0 0;color:var(--bad)}
+.result{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.score{font:700 58px/1 "Bricolage Grotesque",system-ui,sans-serif}
+.score small{font-size:18px;color:var(--mute);font-weight:600}
+.bar{position:relative;height:8px;margin:18px 0;border-radius:4px;background:var(--line)}
+.bar i{position:absolute;top:-5px;left:0;width:6px;height:18px;border-radius:3px;background:var(--bc);transform:translateX(-50%);transition:left .7s cubic-bezier(.2,.8,.2,1)}
+.band{margin:0;color:var(--bc);font-weight:500}
+.result p:last-child{margin:6px 0 0}
+.fine{margin:18px 0 0;color:var(--mute);font-size:12px}
+
+@media(max-width:860px){.layout{grid-template-columns:1fr}.side{position:static}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}

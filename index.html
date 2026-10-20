@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screen time and wellbeing predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>How do your daily habits add up?</h1>
+    <p class="sub">Describe a typical day. The model estimates a wellbeing score.</p>
+  </div>
+  <p class="api" id="api" data-state="checking" title="http://localhost:8000"><span class="dot"></span><span id="api-text">Checking API</span></p>
+</header>
+
+<main class="layout">
+  <form id="form" class="form">
+    <fieldset>
+      <legend>About you</legend>
+      <div class="grid">
+        <label class="f"><span class="t">Age</span><input type="number" name="age" min="10" max="100" value="20" required></label>
+        <label class="f"><span class="t">Country</span><select name="country" data-default="India" data-options="India,USA,Canada,Australia,UK,Germany,Mexico,Turkey,France,Other"></select></label>
+        <div class="f"><span class="t">Gender</span><div class="seg" data-name="gender" data-options="Male,Female"></div></div>
+        <label class="f"><span class="t">Academic level</span><select name="academic_level" data-options="Undergraduate,graduate:Graduate,High School"></select></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Social media</legend>
+      <div class="grid">
+        <label class="f"><span class="t">Most used platform</span><select name="most_used_platform" data-options="Instagram,TikTok,Facebook,LinkedIn,YouTube,Twitter,Snapchat,WhatsApp,LINE,VKontakte,KakaoTalk,WeChat"></select></label>
+        <label class="f"><span class="t">Phone unlocks per day</span><input type="number" name="daily_unlocks" min="0" value="50" required></label>
+        <div class="f wide"><span class="t">Main purpose</span><div class="seg" data-name="purpose_of_use" data-default="Entertainment" data-options="Networking,Education,Entertainment,News"></div></div>
+        <label class="f wide"><span class="t">Time on social media <output></output></span><input type="range" name="avg_daily_usage_hours" data-k="social" min="0" max="24" step="0.5" value="4"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Daily rhythm</legend>
+      <div class="grid">
+        <label class="f wide"><span class="t">Sleep per night <output></output></span><input type="range" name="sleep_hours_per_night" data-k="sleep" min="0" max="24" step="0.5" value="7"></label>
+        <label class="f wide"><span class="t">Study <output></output></span><input type="range" name="study_hours" data-k="study" min="0" max="24" step="0.5" value="4"></label>
+        <label class="f wide"><span class="t">Physical activity <output></output></span><input type="range" name="physical_activity_hours" data-k="move" min="0" max="24" step="0.5" value="1"></label>
+        <div class="f wide"><span class="t">Stress level</span><div class="seg" data-name="stress_level" data-default="Medium" data-options="Low,Medium,High,Very High"></div></div>
+      </div>
+    </fieldset>
+  </form>
+
+  <aside class="side">
+    <svg id="ring" class="ring" viewBox="0 0 120 120" role="img" aria-label="How a 24 hour day splits across your habits"></svg>
+    <ul id="legend" class="legend"></ul>
+    <button class="btn" id="go" form="form" type="submit">Predict score</button>
+    <p class="err" id="err" role="alert" hidden></p>
+    <div class="result" id="result" aria-live="polite" hidden>
+      <div class="score"><span id="score">0</span><small> / 10</small></div>
+      <div class="bar"><i id="mark"></i></div>
+      <p class="band" id="band"></p>
+      <p id="note"></p>
+    </div>
+    <p class="fine">An estimate from a model trained on survey data. It is not a diagnosis.</p>
+  </aside>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
