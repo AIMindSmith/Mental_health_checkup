@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:8000";   // where your FastAPI server runs
+const API = "https://mental-health-checkup.onrender.com";   // where your FastAPI server runs
 const SCALE_MAX = 10;                  // top of the model's score scale (higher = better)
 const BANDS = [                        // [upper limit, label, colour, note]
   [5, "Lower range", "bad", "The model estimates a lower score for these habits. Try the sleep and social media sliders to see what moves it. If you have been struggling, talking to someone you trust can help."],
